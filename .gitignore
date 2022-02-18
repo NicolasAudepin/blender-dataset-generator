@@ -1,0 +1,13 @@
+
+cool Results/
+Results/
+
+__pycache__/
+
+generated_images/
+generated_images0/
+
+generated_images_256/
+generated_images_512_test/
+generated_images_512_train/
+generated_images_1000/
