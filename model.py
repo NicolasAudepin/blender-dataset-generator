@@ -160,7 +160,7 @@ class FCDenseNet(nn.Module):
         self.finalConv = nn.Conv2d(in_channels=cur_channels_count,
                out_channels=n_classes, kernel_size=1, stride=1,
                    padding=0, bias=True, device = device)
-        self.sigmoid = nn.Sigmoid()
+        self.sigmoid = nn.ReLU()
 
     def forward(self, x):
         out = self.firstconv(x)
@@ -206,38 +206,6 @@ def FCDenseNet103(n_classes, device):
         growth_rate=16, out_chans_first_conv=48, n_classes=n_classes,
         device = device)
 
-
-class MyModel(nn.Module):
-    def __init__(self,device):
-        super(MyModel, self).__init__()
-        self.conv1 = nn.Conv2d(3,10,kernel_size=5,padding=2)
-        self.Relu1 = nn.ReLU()
-        self.conv2 = nn.Conv2d(10,10,kernel_size=5,padding=2)
-        self.Relu2 = nn.ReLU()
-        self.conv3 = nn.Conv2d(10,10,kernel_size=5,padding=2)
-        self.Relu3 = nn.ReLU()
-        self.conv4 = nn.Conv2d(10,8,kernel_size=5,padding=2)
-        self.Sigmo = nn.Sigmoid()
-        self.device = device
-
-    def dense_block(self,n,k,x):
-        x_chan = x.size()[1]
-        print(x.size())
-        for i in range(n):
-            x = torch.cat([x,nn.ReLU(nn.Conv2d(k+x_chan,k,kernel_size=5,padding=2)(x))],1)
-        return x
-
-        
-    def forward(self,x):
-        x = DenseLayer(3,10,self.device)(x)
-        x = DenseLayer(10,20,self.device)(x)
-        x = DenseLayer(20,20,self.device)(x)
-        x = DenseLayer(20,20,self.device)(x)
-        x = DenseLayer(20,10,self.device)(x)
-        x = DenseLayer(10,8,self.device)(x)
-
-
-        return x
 
 
 if __name__ == "__main__":

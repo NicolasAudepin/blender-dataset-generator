@@ -18,23 +18,24 @@ def loadImage(filename):
     Loads an image file and converts it to a usable tensor. This means permuting Heigth,Width,Channel to Channel,Heigth,Width 
     """
     img = cv2.imread(filename,cv2.IMREAD_ANYCOLOR | cv2.IMREAD_ANYDEPTH)
-    #print("*** LOADING "+ filename)
+    # print("*** LOADING "+ filename)
     # print(img.shape)
     # print(img.dtype)
     # print(img[0][0])
     if(img.dtype == "uint16"): 
         img = img.astype("uint8") #when a png file is read this is needed 
-    mg = img /255
+    
     # print("LOAD"+filename)
     x = torch.from_numpy(img) #do not likes uint16
     # tensor width,height,channels
     x=x.permute(2,0,1)  # tensor channels,width,height
+    
     x = x / 255
     x = x - 0.5
     # print("as ")
     # print(x.size())
     # print(x.dtype)
-    # print(x[0][0])
+    
     
     return x
 

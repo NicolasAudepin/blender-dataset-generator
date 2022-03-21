@@ -24,7 +24,7 @@ from torch.utils.tensorboard import SummaryWriter
 
 #import importlib
 #importlib.reload(dataLoader)
-from model import MyModel,FCDenseNet57
+from model import FCDenseNet57, FCDenseNet57
 
 # Device configuration
 
@@ -128,7 +128,7 @@ class Trainer():
         train_display = Training_display_tread()
         train_display.start()
         displayed_data = dict()
-        
+
         folder =  self.weight_folder
         writer = SummaryWriter(log_dir=folder)
         writer.add_text("Description",self.description_string(self.description))
@@ -208,24 +208,28 @@ if __name__ =="__main__":
 
     print(Panel(Text("Script train.py Starting",justify = "center",style="bold magenta")))
     
-    num_epochs = 200
+    num_epochs = 20000
     batch_size = 1
     learning_rate = 0.01
 
-    description  ="Using FCDenseNet57 on the Tiramisu architecture with sigmoid final activation. Does not includ the HDRI yet. Does not clamp the exr Input yet. Not Great yet."
+    description  ="Using FCDenseNet57 on the Tiramisu architecture with RELU final activation. Does not includ the HDRI yet. Does not clamp the exr Input yet. Not Great yet."
 
     device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
     #device = "cpu"
     
+    #generated_images_1_im
+
     train_dataset = dataManager.MyDataset("./generated_images_256")
     test_dataset = dataManager.MyDataset("./generated_images_256")
-    # train_dataset = dataManager.MyDataset("./generated_images_512_train")
-    # test_dataset = dataManager.MyDataset("./generated_images_512_test")
+    train_dataset = dataManager.MyDataset("./generated_images_512_train")
+    test_dataset = dataManager.MyDataset("./generated_images_512_test")
+    train_dataset = dataManager.MyDataset("./generated_images_1_im")
+    test_dataset = dataManager.MyDataset("./generated_images_1_im")
     
 
     model = FCDenseNet57(8,device).to(device) # We train for 8 channels because we do not predict the Environement yet
     # logging.info("Trainer")
-    training_name ="FCDenseNet57_"+random_pokemon()
+    training_name ="FCDenseNet57"+random_pokemon()
     folder = "runs\\"+datetime.now().strftime("%Y%m%d_%H%M%S_")+training_name
     trainer = Trainer(model, train_dataset, test_dataset, training_name, folder, 
         num_epochs=num_epochs,
